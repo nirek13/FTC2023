@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -46,8 +47,8 @@ public class Beuffoons extends LinearOpMode {
         leftClaw = hardwareMap.get(Servo.class , "servo1");
         rightClaw = hardwareMap.get(Servo.class , "servo2");
         trigger = hardwareMap.get(Servo.class, "servo3");
-
-
+        
+        
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -58,59 +59,59 @@ public class Beuffoons extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
+        
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
-
+            
             if(gamepad2.y || gamepad1.y){
                 armHeight.setPower(.5);
-                sleep(100);
-            }
-            armHeight.setPower(0);
-
+                
+                    }
+                    armHeight.setPower(0);
+                    
             if(gamepad2.x || gamepad1.x){
                 armHeight.setPower(-.5);
-                sleep(100);
-            }
-
+                
+                    }
+                    
             if(gamepad2.left_bumper || gamepad1.left_bumper){
                 leftClaw.setDirection(Servo.Direction.FORWARD);
-                leftClaw.setPosition(-.3);
+                leftClaw.setPosition(-.1);
                 //gamepad2.left_bumper = false;
                 //gamepad1.left_bumper = false;
             } else if(gamepad2.left_trigger!= 0 || gamepad1.left_trigger!= 0){
                 leftClaw.setDirection(Servo.Direction.REVERSE);
-                leftClaw.setPosition(.3);
+                leftClaw.setPosition(-.9 );
                 //gamepad2.left_trigger = 0;
                 //gamepad1.left_trigger = 0;
-            }
-
-
+            } 
+            
+            
             if(gamepad2.right_bumper || gamepad1.right_bumper){
                 rightClaw.setDirection(Servo.Direction.FORWARD);
-                rightClaw.setPosition(.6);
-
+                rightClaw.setPosition(1);
+                
             } else if(gamepad2.right_trigger!= 0 || gamepad1.right_trigger!= 0){
                 rightClaw.setDirection(Servo.Direction.REVERSE);
-                rightClaw.setPosition(.9);
+                rightClaw.setPosition(.5);
                 //gamepad2.right_trigger = 0;
                 //gamepad1.right_trigger = 0;
-            }
-
-
+            } 
+            
+            
             if (gamepad2.b || gamepad1.b){
                 trigger.setPosition(trigger.getPosition()+.5);
             }
-            armHeight.setPower(0);
+                armHeight.setPower(0);
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
-
+            
             // POV Mode uses left stick to go forward, and right stick to turn.
-
+            
             while (armHeight.getCurrentPosition() != 0){
                 if (armHeight.getCurrentPosition() < 0){
                     moveArm(200, .5);
@@ -125,8 +126,8 @@ public class Beuffoons extends LinearOpMode {
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-
-
+            
+           
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
@@ -143,34 +144,20 @@ public class Beuffoons extends LinearOpMode {
             telemetry.addData("truggeer engaged",gamepad1);
             telemetry.addData("arhmdu:", armHeight.getCurrentPosition());
             telemetry.update();
-
-        };
-
-    }
-    private void moveArm(int position, double power)
-    {
-        armHeight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armHeight.setTargetPosition(position);
-        armHeight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armHeight.setPower(power);
-        armHeight.setPower(0);
-        armHeight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armHeight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    private void lockArm(int lockPosition , double power ){
-
-        while (armHeight.getCurrentPosition() != lockPosition){
-            if (armHeight.getCurrentPosition() - lockPosition >= 350){
-                moveArm(-200, .5);
+            
+            };
+            
+        }
+         private void moveArm(int position, double power) 
+            {                  
+                armHeight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                armHeight.setTargetPosition(position);
+                armHeight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armHeight.setPower(power);
+                armHeight.setPower(0);
+                armHeight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                armHeight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            if (lockPosition - armHeight.getCurrentPosition()>= 350){
-                moveArm(200 , .5);
-            }
-        };
+            
+
     }
-
-
-
-}
-
