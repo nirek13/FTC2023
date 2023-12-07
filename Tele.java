@@ -104,7 +104,7 @@ public class Beuffoons extends LinearOpMode {
             
             
             if (gamepad2.b || gamepad1.b){
-                trigger.setPosition(trigger.getPosition()+.5);
+                trigger.setPosition(.5);
             }
                 armHeight.setPower(0);
             // Choose to drive using either Tank Mode, or POV Mode
