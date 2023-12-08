@@ -32,6 +32,7 @@ public class Beuffoons extends LinearOpMode {
     private Servo trigger = null;
     private double leftClawPos = 0;
     private double rightClawPos = 0;
+    private DcMotor armHeight2 = null;
 
     @Override
     public void runOpMode() {
@@ -44,9 +45,10 @@ public class Beuffoons extends LinearOpMode {
         leftDrive  = hardwareMap.get(DcMotor.class, "Motor3");
         rightDrive = hardwareMap.get(DcMotor.class, "Motor2");
         armHeight = hardwareMap.get(DcMotor.class , "Motor4");
-        leftClaw = hardwareMap.get(Servo.class , "servo1");
-        rightClaw = hardwareMap.get(Servo.class , "servo2");
+        leftClaw = hardwareMap.get(Servo.class , "servo5");
+        rightClaw = hardwareMap.get(Servo.class , "servo4");
         trigger = hardwareMap.get(Servo.class, "servo3");
+        armHeight2 = hardwareMap.get(DcMotor.class, "Motor1");
         
         
 
@@ -68,16 +70,20 @@ public class Beuffoons extends LinearOpMode {
             double rightPower;
             
             if(gamepad2.y || gamepad1.y){
-                armHeight.setPower(.5);
-                
+                armHeight.setPower(1);
+                armHeight2.setPower(-1);
                     }
                     armHeight.setPower(0);
+                    armHeight2.setPower(0);
                     
             if(gamepad2.x || gamepad1.x){
-                armHeight.setPower(-.5);
+                armHeight.setPower(-1);
+                armHeight2.setPower(1);
                 
                     }
-                    
+                armHeight.setPower(0);
+                armHeight2.setPower(0);
+                
             if(gamepad2.left_bumper || gamepad1.left_bumper){
                 leftClaw.setDirection(Servo.Direction.FORWARD);
                 leftClaw.setPosition(-.1);
@@ -97,22 +103,22 @@ public class Beuffoons extends LinearOpMode {
                 
             } else if(gamepad2.right_trigger!= 0 || gamepad1.right_trigger!= 0){
                 rightClaw.setDirection(Servo.Direction.REVERSE);
-                rightClaw.setPosition(.5);
+                rightClaw.setPosition(.65);
                 //gamepad2.right_trigger = 0;
                 //gamepad1.right_trigger = 0;
             } 
             
             
             if (gamepad2.b || gamepad1.b){
-                trigger.setPosition(.5);
+                trigger.setPosition(trigger.getPosition()+.5);
             }
-                armHeight.setPower(0);
+                
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
             
             // POV Mode uses left stick to go forward, and right stick to turn.
             
-            while (armHeight.getCurrentPosition() != 0){
+            while (armHeight.getCurrentPosition() != 0 && false){
                 if (armHeight.getCurrentPosition() < 0){
                     moveArm(200, .5);
                 }
@@ -158,6 +164,22 @@ public class Beuffoons extends LinearOpMode {
                 armHeight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 armHeight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            
+         private void lockArm(int lockPosition , double power ){
+
+        while (armHeight.getCurrentPosition() != lockPosition){
+            if (armHeight.getCurrentPosition() - lockPosition >= 350){
+                moveArm(-200, .5);
+            }
+            if (lockPosition - armHeight.getCurrentPosition() >=350){
+                moveArm(200 , .5);
+
+            }
+        }
 
     }
+}
+
+
+
+
+
